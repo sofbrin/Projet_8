@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>Pur Beurre</title>
+
+  {% load static %}
+
+  <!-- Font Awesome Icons -->
+  <link href="{% static 'products/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet" type="text/css">
+  <link href='https://fonts.googleapis.com/css?family=Scope+One' rel='stylesheet' type='text/css'>
+
+  <!-- Plugin CSS -->
+  <link href="{% static 'products/vendor/magnific-popup/magnific-popup.css' %}" rel="stylesheet">
+
+  <!-- Theme CSS - Includes Bootstrap -->
+  <link href="{% static 'products/css/creative.min.css' %}" rel="stylesheet">
+  <link href="{% static 'products/css/purbeurre.css' %}" rel="stylesheet">
+
+  <!-- Favicon -->
+  <link rel="shortcut icon" href="{% static 'products/img/logo_pur_beurre-favicon.png' %}">
+
+</head>
+
+<body id="page-top">
+
+  {% if user.is_authenticated %}
+    {% include 'products/navbarAuth.html' %}
+  {% else %}
+    {% include 'products/navbarNotAuth.html' %}
+  {% endif %}
+
+  {% block content%} {% endblock %}
+
+  <!-- Footer -->
+  <footer class="footer py-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-6 col-md-6 text-center"><h4>Mentions légales</h4></div>
+        <div class="col-lg-6 col-md-6 text-center"><h4>Contact</h4></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'products/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'products/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+
+  <!-- Plugin JavaScript -->
+  <script src="{% static 'products/vendor/jquery-easing/jquery.easing.min.js' %}"></script>
+  <script src="{% static 'products/vendor/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+
+  <!-- Custom scripts for this template -->
+  <script src="{% static 'products/js/creative.min.js' %}"></script>
+  <script src="{% static 'products/js/purbeurre.js' %}"></script>
+
+</body>
+
+</html>

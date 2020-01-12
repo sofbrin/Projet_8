@@ -1,0 +1,38 @@
+{% extends 'products/base.html' %}
+
+{% block content %}
+
+  <!-- account header -->
+  <header class="accounthead">
+    <div class="container">
+      <div class="row align-items-center justify-content-center text-center">
+        <h1 class="text-uppercase font-weight-bold">Créez un compte</h1>
+      </div>
+    </div>
+  </header>
+
+  <!-- email Section -->
+  <section class="container-account">
+    <div class="container">
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.first_name }}
+        <br>
+        {{ form.last_name }}
+        <br>
+        {{ form.email }}
+        <p class="formerrors">{{ form.email.errors }}</p>
+        
+        {{ form.password1 }}
+        <br>
+        {{ form.password2 }}
+        <p class="formerrors">{{ form.password2.errors }}</p>
+
+        <button class="btn" id="logforms" type="submit">Valider</button>
+      </form>
+    </div>
+  </section>
+
+{% endblock %}
+
