@@ -22,7 +22,6 @@ from products import views
 
 urlpatterns = [
     path('', views.index, name='home'),
-    #path('users/', include('django.contrib.auth.urls')),
     path('users/', include('users.urls')),
     path('products/', include('products.urls')),
     path('admin/', admin.site.urls),

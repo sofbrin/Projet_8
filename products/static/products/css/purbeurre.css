@@ -115,42 +115,63 @@ header.accounthead {
 header.accounthead h1 {
   color: #86EBE6;
   font-size: 2.25rem;
+  background: rgba(232, 167, 93, 0.5);
+  margin: 20px;
+  padding: 10px;
+  border-radius: 20px;
 }
 
 header.resultshead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 72px);
-  background: #DE9440 left 5% / 20% 80% repeat-x url("../img/noun_carrot.svg");
-  background-position: bottom;
+  /*background: #DE9440 left 5% / 20% 80% repeat-x url("../img/noun_carrot.svg");
+  background: linear-gradient(to bottom, rgba(46, 39, 49, 0.4) 0%, rgba(46, 39, 49, 0.4) 100%), url({{ product_image }});
+  background-position: center;
+  background-repeat: no-repeat;
   background-attachment: scroll;
+  background-size: cover;*/
 }
 header.resultshead h1 {
+  position: relative;
   color: #86EBE6;
   font-size: 2.25rem;
+  background: rgba(46, 39, 49, 0.7);
+
+  margin: 20px;
+  padding: 10px;
+  border-radius: 20px;
 }
 
 header.substitutehead {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 72px);
-  background: #DE9440 left 5% / 20% 80% repeat-x url("../img/noun_carrot.svg");
+  /*background: #DE9440 left 5% / 20% 80% repeat-x url("../img/noun_carrot.svg");
   background-position: bottom;
-  background-attachment: scroll;
+  background-attachment: scroll;*/
 }
 header.substitutehead h1 {
   color: #86EBE6;
   font-size: 2.25rem;
+  background: rgba(46, 39, 49, 0.7);
+  margin: 20px;
+  padding: 10px;
+  border-radius: 20px;
 }
 
 .productheader {
   padding-top: 10rem;
   padding-bottom: calc(10rem - 72px);
-  background: #DE9440 left 5% / 20% 80% repeat-x url("../img/noun_carrot.svg");
+  /*background: #DE9440 left 5% / 20% 80% repeat-x url("../img/noun_carrot.svg");
   background-position: bottom;
-  background-attachment: scroll;
+  background-attachment: scroll;*/
 }
 .productheader h1 {
   color: #86EBE6;
   font-size: 2.25rem;
+  background: rgba(46, 39, 49, 0.7);
+  margin: 20px;
+  padding: 10px;
+  border-radius: 20px;
 }
 
 @media (min-width: 992px) {
@@ -260,6 +281,8 @@ header.substitutehead h1 {
 }
 .container-results {
   background: #345A61;
+  color: #17202A;
+  min-height: 100%;
   height: auto;
   padding: 100px 0 0;
  }
@@ -281,11 +304,29 @@ header.substitutehead h1 {
   font-size: 26px;
   color: rgba(46, 39, 49);
   background: #C45525;
+
+}
+#logforms1 h5 {
+  font-size: 20px;
+  color: rbga(46, 39, 49);
+  background: rgba(134, 235, 230, 0.5);
+  max-width: 100%;
+  padding: 5px;
+  border-radius: 10px;
 }
 .formerrors {
   font-size: 18px;
   color: red;
 }
+#saveMessage {
+  color: rgba(46, 39, 49);
+  font-size: 1 rem;
+  background: rgba(134, 235, 230, 0.7);
+  margin: 5px;
+  padding: 5px;
+  border-radius: 10px;
+}
+
 
 /* IMAGES - ICONS */
 #imgCol, #imgRem {
@@ -294,8 +335,8 @@ header.substitutehead h1 {
 }
 .img-product {
   position: relative;
-  height: 200px;
-  width: 200px;
+  height: 250px;
+  width: 250px;
   margin: 0px 0px;
   border: 1px solid dark;
   border-radius: 10px;
@@ -304,29 +345,53 @@ header.substitutehead h1 {
   font-size: 100px;
   color: #E8A75D;
 }
-#logoutIcon, #loginIcon, #searchIcon {
+#logoutIcon, #loginIcon, #signupIcon {
   font-size: 35px;
   color: black;
   margin-top: 12px;
+  margin-right: -10px;
+  margin-left: 10px;
 }
-#userIcon, #signupIcon {
+#userIcon{
   font-size: 30px;
   color: black;
   margin-top: 12px;
   margin-right: -10px;
   margin-left: 10px;
 }
+.saveIcon {
+  font-size: 16px;
+  color: black;
+}
+.saveIcon.disabled {
+  color: #6C757D;
+  background-color: #6C757D;
+  border: 1px solid #DE9440;
+}
 .carrotIcon {
   height: auto;
   width: auto;
   max-height: 50px;
+  margin-right: -10px;
+  margin-left: 10px;
 }
 
 /* DECORATIONS */
 .badge-nutriscore {
   position: absolute;
-  right: 20%;
-  top: 20%;
+  right: 10%;
+  top: 10%;
+  font-size: 2em;
+}
+.badge-title {
+  position: absolute;
+  /*right: -50%;
+  /*top: 40%;
+  font-size: 2em;*/
+}
+.badge-product {
+  position: absolute;
+  right: 43%;
 }
 hr.divider {
   max-width: 3.25rem;
@@ -342,4 +407,52 @@ hr.divider {
 .form-control:focus {
   color: #C45525;
   border-color: rgba(46, 39, 49);
+}
+
+/* BADGES & PAGINATION COLORS */
+.badge-success {
+  background-color: #32CD32;
+  color: rgba(46, 39, 49);
+}
+.badge-light {
+  background-color: #ADFF2F;
+  color: rgba(46, 39, 49);
+}
+.badge-primary {
+  background-color: #FFD700;
+  color: rgba(46, 39, 49);
+}
+.badge-warning {
+  background-color: #FFA500;
+  color: rgba(46, 39, 49);
+}
+.badge-danger {
+  background-color: #FF0000;
+  color: rgba(46, 39, 49);
+}
+.page-link {
+  color: #DE9440;
+  font-weight: bold;
+  background-color: #345A61;
+  border: 1px solid #DE9440;
+}
+.page-item.active .page-link {
+  color: #DE9440;
+  background-color: #86EBE6;
+}
+.box-active {
+  color:#DE9440;
+  font-weight: bold;
+  background-color: #86EBE6;
+  border: 1px solid #DE9440;
+  position: relative;
+  display: block;
+  padding: .5rem .75rem;
+  margin-left: -1px;
+  line-height: 1.25;
+}
+.page-item.disabled .page-link {
+  color: #6C757D;
+  background-color: #6C757D;
+  border: 1px solid #DE9440;
 }

@@ -1,73 +1,72 @@
-
 import requests
 from django.core.exceptions import ObjectDoesNotExist
 from products.models import CategoryDb, ProductDb
 
 
-def select_categories():
+def select_categories(limit_cat):
     if CategoryDb.objects.all().count() != 0:
         return
-    r_categories = requests.get('https://fr.openfoodfacts.org/categories.json')
-    response = r_categories.json()
-    categories = response['tags']
 
-    selected_categories = []
-
-    """ sorting categories by size (reverse = from the biggest to the smallest """
-    categories = sorted(categories, key=lambda x: x['products'], reverse=True)
-    for category in categories:
-        try:
-            CategoryDb.objects.get(url=category['url'])
-        except ObjectDoesNotExist:
-            selected_categories.append(category)
-            save_categories_in_db(category)
-            print('\nLa catégorie "' + category['name'] + '" vient d\'être ajoutée dans la base de données')
-            select_products(category)
-            if len(selected_categories) == 20:
-                break
+    response = requests.get('https://fr.openfoodfacts.org/categories.json')
+    data = response.json()
+    categories = data['tags']
+    selected_cat = categories[:limit_cat]
+    for category in selected_cat:
+        CategoryDb.objects.create(url=category['url'], name=category['name'])
+        print('\nLa catégorie "' + category['name'] + '" vient d\'être ajoutée dans la base de données'
+                                                      ' avec les produits suivants :')
+        select_products(category)
 
 
 def select_products(category):
-    selected_products = []
+    selected_prod = []
     page = 1
 
-    while len(selected_products) < 20:
-        r_products = requests.get(category['url'] + '/{}.json'.format(page))
+    while len(selected_prod) < 20:
+        r_products = requests.get('https://world.openfoodfacts.org/cgi/search.pl', params={
+            'tagtype_0': 'categories',
+            'tag_contains_0': 'contains',
+            'tag_0': category['id'],
+            'tagtype_1': 'countries',
+            'tag_contains_1': 'contains',
+            'tag_1': 'france',
+            'nutriment_0': 'fat',
+            'nutriment_compare_0': 'gte',
+            'nutriment_value_O': 0,
+            'nutriment_1': 'saturated-fat',
+            'nutriment_compare_1': 'gte',
+            'nutriment_value_0': 0,
+            'nutriment_2': 'sugars',
+            'nutriment_compare_2': 'gte',
+            'nutriment_value_2': 0,
+            'nutriment_3': 'salt',
+            'nutriment_compare_3': 'gte',
+            'nutriment_value_3': 0,
+            'json': 1,
+            'sort_by': 'unique_scans_n',
+            'page_size': 50,
+            'action': 'process',
+            'page': page
+
+        })
         response = r_products.json()
         products = response['products']
-
         for product in products:
+            if 'product_name' not in product or product['product_name'] == '':
+                continue
             try:
-                ProductDb.objects.get(url=product['url'])
+                ProductDb.objects.get(name__iexact=product['product_name'])
             except ObjectDoesNotExist:
-                if 'product_name' in product and product['product_name'] != '' \
-                        and 'url' in product and product['url'] != '' \
-                        and 'nutrition_grades' in product and product['nutrition_grades'] != '' \
-                        and 'fat_100g' in product and product['fat_100g'] != '' \
-                        and 'saturated_fat_100g' in product and product['saturated_fat_100g'] != '' \
-                        and 'sugars_100g' in product and product['sugars_100g'] != '' \
-                        and 'salt_100g' in product and product['salt_100g'] != '':
-                    selected_products.append(product)
-                    save_products_in_db(product, category)
-                    print('Le produit "' + product['product_name'] + '" vient d\'être ajouté dans cette catégorie.')
-                if len(selected_products) == 20:
+                if 'url' in product and product['url'] != '' \
+                        and 'nutrition_grades' in product and product['nutrition_grades'] != '':
+                    selected_prod.append(product)
+                    print(product['product_name'])
+                    categorydb = CategoryDb.objects.get(url=category['url'])
+                    ProductDb.objects.create(name=product['product_name'], url=product['url'],
+                                             image=product['image_front_url'], nutriscore=product['nutrition_grades'],
+                                             category=categorydb, fat=product['nutriments']['fat'],
+                                             saturated_fat=product['nutriments']['saturated-fat'],
+                                             sugar=product['nutriments']['sugars'], salt=product['nutriments']['salt'])
+                if len(selected_prod) == 20:
                     break
         page += 1
-
-
-def save_categories_in_db(category):
-    category_db = CategoryDb(url=category['url'], name=category['name'])
-    category_db.save()
-
-
-def save_products_in_db(product, category):
-    category_db = CategoryDb.objects.get(url=category['url'])
-
-    product_db = ProductDb(name=product['product_name'].encode(encoding='UTF-8'), category=category_db,
-                           url=product['url'].encode(encoding='UTF-8'),
-                           nutriscore=product['nutrition_grades'],
-                           fat=product['fat_100g'].encode(encoding='UTF-8'),
-                           saturated_fat=product['saturated_fat_100g'].encode(encoding='UTF-8'),
-                           sugar=product['sugars_100g'].encode(encoding='UTF-8'),
-                           salt=product['salt_100g'].encode(encoding='UTF-8'))
-    product_db.save()

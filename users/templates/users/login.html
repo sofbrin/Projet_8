@@ -13,11 +13,27 @@
 
   <!-- email Section -->
   <section class="container-account">
-    <div class="container p-3">
-      <!--{% if form.errors %}
-      <p>L'email ou le mot de passe saisi n'est pas correct. Veuillez recommencer ou créer un compte</p>
-      {% endif %}-->
+    <!--<div class="container p-3">
+      <form method="POST">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        {{ form.email }}
+        <p class="formerrors">{{ form.email.errors | safe }}</p>
+        {{ form.password }}
+        <p class="formerrors">{{ form.password.errors | safe }}</p>
+        <button class="btn" id="logforms" type="submit">Valider</button>
+      </form>
+      {% if messages %}
+      <br>
+      <div class="messages">
+          {% for message in messages %}
+            <p class="{{ messages.tags }}">{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>-->
 
+    <div class="container p-3">
       <form method="POST">
         {% csrf_token %}
         {{ form.email }}
