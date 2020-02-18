@@ -1,3 +1,4 @@
+import json
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404
@@ -5,9 +6,35 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.template import loader
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+from django.http import JsonResponse
+
 from django.urls import reverse
+from django.views.decorators.http import require_http_methods
 
 from products.models import ProductDb, UserPersonalDb
+
+
+"""class ProductAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = ProductDb.objects.all()
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+        return qs"""
+
+
+def autocomplete(request):
+    if request.is_ajax():
+        q = request.GET.get('term', '')
+        products = ProductDb.objects.filter(name__startswith=q)
+        results = []
+        for p in products:
+            results.append(p.name)
+        data = json.dumps(results)
+    else:
+        data = 'fail'
+    mimetype = 'application/json'
+    return HttpResponse(data, mimetype)
+
 
 
 def index(request):
@@ -46,7 +73,7 @@ def results(request):
     return render(request, 'products/results.html', context)
 
 
-@login_required
+"""@login_required
 def save_in_db(request, substitute_id, product_id, query, page_number):
     substitute = ProductDb.objects.get(pk=substitute_id)
     product = ProductDb.objects.get(pk=product_id)
@@ -57,7 +84,25 @@ def save_in_db(request, substitute_id, product_id, query, page_number):
     except ObjectDoesNotExist:
         UserPersonalDb.objects.create(original_product=product, replaced_product=substitute, user=request.user)
         messages.success(request, 'Le produit a été enregistré dans votre espace personnel')
-        return HttpResponseRedirect(reverse('results') + '?query=' + query + '&page=' + page_number)
+        return HttpResponseRedirect(reverse('results') + '?query=' + query + '&page=' + page_number)"""
+
+
+@login_required
+#@require_http_methods(['POST'])
+def save_in_db(request):
+    #body = json.loads(request.body)
+    #product_id = body['product_id']
+    #substitute_id = body['substitute_id']
+    product_id = request.GET.get('product_id')
+    substitute_id = request.GET.get('substitute_id')
+
+    original_product = ProductDb.objects.get(pk=product_id)
+    replaced_product = ProductDb.objects.get(pk=substitute_id)
+    UserPersonalDb.objects.create(original_product=original_product, replaced_product=replaced_product, user=request.user)
+    data = {
+        'is_selected': True
+    }
+    return JsonResponse(data)
 
 
 def my_substitutes(request):

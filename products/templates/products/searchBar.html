@@ -1,7 +1,7 @@
   <!-- Search Bar -->
   {% load static %}
   <div class="card">
-    <form class="input-group input-group-sm-mb-3 mx-auto" action="{% url 'results' %}" method="GET" accept-charset="utf-8">
+    <form class="input-group input-group-sm-mb-3 mx-auto" action="{% url 'results' %}">
       <input type="search" name="query" placeholder="Produit" class="form-control" id="search2">
         <button id="search" type="submit" class="btn">Chercher</button>
     </form>
