@@ -1,40 +1,31 @@
 import json
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.template import loader
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.http import JsonResponse
-
 from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
 from products.models import ProductDb, UserPersonalDb
+from products.forms import ProductSearch
 
 
-"""class ProductAutocomplete(autocomplete.Select2QuerySetView):
-    def get_queryset(self):
-        qs = ProductDb.objects.all()
-        if self.q:
-            qs = qs.filter(name__istartswith=self.q)
-        return qs"""
-
-
-def autocomplete(request):
+def autocompleteModel(request):
     if request.is_ajax():
         q = request.GET.get('term', '')
-        products = ProductDb.objects.filter(name__startswith=q)
+        search_qs = ProductDb.objects.filter(name__istartswith=q)
         results = []
-        for p in products:
+        for p in search_qs:
             results.append(p.name)
         data = json.dumps(results)
     else:
         data = 'fail'
     mimetype = 'application/json'
     return HttpResponse(data, mimetype)
-
 
 
 def index(request):
@@ -48,29 +39,52 @@ def index(request):
 
 
 def results(request):
-    query = request.GET.get('query')
-    #product = get_object_or_404()
-    product = ProductDb.objects.filter(name__icontains=query).order_by('name').first()
-    substitutes_list = ProductDb.objects.filter(category=product.category, nutriscore__lt=product.nutriscore).order_by('nutriscore')
+    if request.method == 'POST':
+        form = ProductSearch(request.POST)
+        if form.is_valid():
+            """name = form.cleaned_data['name']
+            product = ProductDb.objects.filter(name=name)
+            if not product.exists():
+                messages.warning(request, 'Produit inconnu, faites une autre reherche')
+                HttpResponseRedirect(request.META.get('HTTP_REFERER'))"""
+            try:
+                name = form.cleaned_data['name']
+                ProductDb.objects.filter(name=name)
+            except AttributeError:
+                messages.warning(request, 'Produit inconnu, faites une autre reherche')
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+        else:
+            messages.warning(request, 'Aucun produit saisi, recommencez')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-    paginator = Paginator(substitutes_list, 6)
-    page_number = request.GET.get('page')
+    if request.method == 'GET':
+        query = request.GET.get('query')
 
-    try:
-        substitutes = paginator.page(page_number)
-    except PageNotAnInteger:
-        substitutes = paginator.page(1)
-    except EmptyPage:
-        substitutes = paginator.page(paginator.num_pages)
-    context = {
-            'product': product,
-            'substitutes': substitutes,
-            'paginate': True,
-            'query': query,
-            #'user_substitutions': request.user.substitutes,
-            'page_number': page_number,
-    }
-    return render(request, 'products/results.html', context)
+        product = ProductDb.objects.filter(name__icontains=query).order_by('name').first()
+        substitutes_list = ProductDb.objects.filter(category=product.category, nutriscore__lt=product.nutriscore).order_by('nutriscore')
+        paginator = Paginator(substitutes_list, 6)
+        page_number = request.GET.get('page')
+
+        try:
+            substitutes = paginator.page(page_number)
+        except PageNotAnInteger:
+            substitutes = paginator.page(1)
+        except EmptyPage:
+            substitutes = paginator.page(paginator.num_pages)
+        context = {
+                'product': product,
+                'substitutes': substitutes,
+                'paginate': True,
+                'query': query,
+                #'user_substitutions': request.user.substitutes,
+                'page_number': page_number,
+        }
+        return render(request, 'products/results.html', context)
+
+
+
+
+
 
 
 """@login_required
@@ -88,20 +102,28 @@ def save_in_db(request, substitute_id, product_id, query, page_number):
 
 
 @login_required
-#@require_http_methods(['POST'])
+@require_http_methods(['POST'])
 def save_in_db(request):
-    #body = json.loads(request.body)
-    #product_id = body['product_id']
-    #substitute_id = body['substitute_id']
-    product_id = request.GET.get('product_id')
-    substitute_id = request.GET.get('substitute_id')
+    body = json.loads(request.body)
+    product_id = body['product_id']
+    substitute_id = body['substitute_id']
 
     original_product = ProductDb.objects.get(pk=product_id)
     replaced_product = ProductDb.objects.get(pk=substitute_id)
-    UserPersonalDb.objects.create(original_product=original_product, replaced_product=replaced_product, user=request.user)
-    data = {
-        'is_selected': True
-    }
+
+    try:
+        UserPersonalDb.objects.get(original_product=original_product, replaced_product=replaced_product,
+                                   user=request.user)
+        data = {
+            'is_in_db': True
+        }
+    except ObjectDoesNotExist:
+        UserPersonalDb.objects.create(original_product=original_product, replaced_product=replaced_product,
+                                      user=request.user)
+        data = {
+            'is_created': True
+        }
+
     return JsonResponse(data)
 
 

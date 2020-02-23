@@ -1,46 +1,37 @@
 $(document).ready(function () {
-//(function($) {
 
   // Autocompletion
-  //$("search").autocomplete({
-    //source: "autocomplete/",
-    //minLength: 2,
-  //});
-
-  /* Search product in db with enter key
-  $(".btn-save").keyup(function(ev) {
-    if (ev.which == 13) {
-        $(".btn-save").click();
-    }
-  });*/
+  $(".searchInput").autocomplete ({
+    source: "/products/autocomplete/",
+    minLength: 2,
+  });
 
   // Save product in db
   $(".btn-save").click(function(e) {
     e.preventDefault();
+    //var form = $(this).closest("form");
+    var substitute_id = $(this).attr('data-subid');
+    var product_id = $(this).attr('data-prodid');
+    var token = $(this).attr('data-token');
 
-    var substitute_id = $(this).attr('substitute_id');
-    var product_id = $(this).attr('product_id');
-    //var token = $(this).attr('token');
-
-    /*$.ajaxSetup({
+    $.ajaxSetup({
         beforeSend: function(xhr, settings) {
             xhr.setRequestHeader('X-CSRFToken', token);
         }
-    })*/
+    })
 
     $.ajax({
-
-        //type: 'POST',
+        type: 'POST',
         url: 'results/save_in_db/',
-        data: JSON.stringify({substitute_id:substitute_id, product_id: product_id}),
+        data: JSON.stringify({substitute_id:substitute_id, product_id:product_id}),
         contentType: 'application/json; charset=utf-8',
 
         success: function(data) {
-            if (data.is_selected) {
+            if (data.is_created) {
                 alert("Ce produit a bien été enregistré dans votre espace");
             }
-            else {
-                alert("Vous n'avez sélectionné aucun produit");
+            else if (data.is_in_db) {
+                alert("Ce produit est déjà dans votre espace");
             }
         }
     })

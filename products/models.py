@@ -1,4 +1,6 @@
 from django.db import models
+from django.db.models import Q
+
 from users.models import User
 
 
@@ -36,3 +38,8 @@ class UserPersonalDb(BaseModel):
     original_product = models.ForeignKey(ProductDb, on_delete=models.CASCADE, related_name='original_product')
     replaced_product = models.ForeignKey(ProductDb, on_delete=models.CASCADE, related_name='replaced_product')
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='substitutes')
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['original_product', 'replaced_product', 'user'], name='no_double')
+        ]

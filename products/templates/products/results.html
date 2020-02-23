@@ -68,19 +68,18 @@
               {% endif %}
             <div class="container-textproduct">
               <h6><strong>{{ substitute.name }}</strong></h6>
-                <a href="{% url 'product' product_id=substitute.id %}" class="pr-2">Fiche produit</a>
+                <a href="{% url 'product' product_id=substitute.id %}">Fiche produit</a>
 
                 {% if user.is_authenticated %}
-                  <form method="post" data-save-in-db="{% url 'save_in_db' substitute_id=substitute.id product_id=product.id %}">
-                    {% csrf_token %}
-                    <button class="btn btn-outline-dark btn-save">
+
+                    <button class="btn btn-outline-dark btn-save" data-subid="{{ substitute.id }}" data-prodid="{{ product.id }}" data-token="{{ csrf_token }}">
                       {% if substitute in user_substitutions %}
                         <i class="fas fa-save"><span> Sauvegarder</span></i>
                       {% else %}
                         <i class="fas fa-save" style="color: black"><span> Sauvegarder</span></i>
                       {% endif %}
                     </button>
-                  </form>
+
                 {% endif %}
 
 

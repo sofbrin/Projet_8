@@ -1,41 +1,6 @@
 (function($) {
   "use strict"; // Start of use strict
 
-// Product search in database
-
-  // Launche the search with enter key
-  $("searcharea").keyup(function(ev) {
-    if (ev.which == 13) {
-        $("#getSearch").click();
-    }
-  });
-
-  // Launche the search with click button
-  $("getSearch").click(function(e) {
-    e.preventDefault();
-
-    var user_search = $("input[id='search2']").val();
-
-    // process the search
-    $.ajax({
-
-        type: 'POST',
-        url: '/results/save_in_db',
-        data: JSON.stringify({'product':user_search}),
-        contentType: 'application/json; charset=utf-8',
-
-        success: function(data) {
-            if (data.is_selected) {
-                alert("Ce produit a bien été enregistré dans votre espace");
-                }
-            else {
-                alert("Vous n'avez sélectionné aucun produit");
-                }
-            }
-        })
-    });
-
-
   // Smooth scrolling using jQuery easing
   $('a.js-scroll-trigger[href*="#"]:not([href="#"])').click(function() {
     if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
