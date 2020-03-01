@@ -18,6 +18,7 @@ def register_view(request):
             user = authenticate(request, email=email, password=password)
             if user is not None:
                 login(request, user)
+                messages.success(request, 'Votre compte a été créé', extra_tags='toaster')
                 return HttpResponseRedirect(reverse('home'))
 
     else:
@@ -35,6 +36,7 @@ def login_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    messages.success(request, 'Vous êtes connecté', extra_tags='toaster')
                     return HttpResponseRedirect(reverse('home'))
                 else:
                     messages.add_message(request, messages.ERROR, "Compte désactivé.")
@@ -52,6 +54,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
+    messages.success(request, 'Vous êtes déconnecté', extra_tags='toaster')
     return HttpResponseRedirect(reverse('home'))
 
 
