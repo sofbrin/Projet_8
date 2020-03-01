@@ -46,7 +46,10 @@
       <br>
       <div class="messages">
           {% for message in messages %}
-            <p class="{{ messages.tags }}">{{ message }}</p>
+            toto: {{ message.extra_tags }}
+            {% if message.extra_tags == None %}
+              <p class="{{ message.tags }}">{{ message }}</p>
+            {% endif %}
           {% endfor %}
         </div>
       {% endif %}

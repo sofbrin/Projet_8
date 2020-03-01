@@ -35,15 +35,16 @@ def login_view(request):
             if user is not None:
                 if user.is_active:
                     login(request, user)
+                    return HttpResponseRedirect(reverse('home'))
                 else:
                     messages.add_message(request, messages.ERROR, "Compte désactivé.")
                     return HttpResponseRedirect(reverse('login'))
-            else:
-                messages.add_message(
-                    request, messages.ERROR, "L'email et/ou le mot de passe sont invalides. Veuillez saisir à nouveau vos identifiants ou créer un compte.")
-                return HttpResponseRedirect(reverse('login'))
 
-            return HttpResponseRedirect(reverse('home'))
+        messages.add_message(
+            request, messages.ERROR, "L'email et/ou le mot de passe sont invalides. Veuillez saisir à nouveau vos identifiants ou créer un compte.")
+        messages.error(request, 'Erreur de saisie', extra_tags='toaster')
+        return HttpResponseRedirect(reverse('login'))
+
     else:
         form = LoginForm()
         return render(request, 'users/login.html', {'form': form})

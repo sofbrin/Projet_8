@@ -44,10 +44,21 @@
   <script src="{% static 'products/js/creative.min.js' %}"></script>
   <script src="{% static 'products/js/purbeurre.js' %}"></script>
   <script src="{% static 'products/js/pbeurre.js' %}"></script>
+  <script src="{% static 'products/js/toastr.js' %}"></script>
+
+  <link href="{% static 'products/css/toastr.css' %}" rel="stylesheet">
 
 </head>
 
 <body id="page-top">
+
+  <script>
+    {% for message in messages %}
+      {% if message.extra_tags == 'toaster' %}
+        toastr.{{ message.level_tag }}('{{ message }}', {timeOut:10000})
+      {% endif %}
+    {% endfor %}
+  </script>
 
   {% if user.is_authenticated %}
     {% include 'products/navbarAuth.html' %}
@@ -61,8 +72,12 @@
   <footer class="footer py-5">
     <div class="container">
       <div class="row justify-content-center">
-        <div class="col-lg-6 col-md-6 text-center"><h4>Mentions légales</h4></div>
-        <div class="col-lg-6 col-md-6 text-center"><h4>Contact</h4></div>
+        <div class="col-lg-6 col-md-6 text-center">
+          <a href="{% url 'legal_notice' %}"><h4>Mentions légales</h4></a>
+        </div>
+        <div class="col-lg-6 col-md-6 text-center">
+          <a href="{% url 'home' %}#contact"><h4>Contact</h4></a>
+        </div>
       </div>
     </div>
   </footer>

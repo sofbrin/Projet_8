@@ -418,6 +418,10 @@ hr.divider {
   border-color: rgba(46, 39, 49);
 }
 
+.toast {
+  z-index: 2000;
+}
+
 /* BADGES & PAGINATION COLORS */
 .badge-success {
   background-color: #32CD32;

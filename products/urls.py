@@ -8,5 +8,6 @@ urlpatterns = [
     path('my_substitutes/', views.my_substitutes, name='my_substitutes'),
     #path('results/save_in_db/<substitute_id>/<product_id>/', views.save_in_db, name='save_in_db'),
     path('results/save_in_db/', views.save_in_db, name='save_in_db'),
-    path('autocomplete/', views.autocompleteModel, name='autocomplete',)
+    path('autocomplete/', views.autocompleteModel, name='autocomplete'),
+    path('legal_notice/', views.legal_notice, name='legal_notice')
 ]

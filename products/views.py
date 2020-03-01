@@ -1,7 +1,7 @@
 import json
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ObjectDoesNotExist
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.template import loader
@@ -17,7 +17,7 @@ from products.forms import ProductSearch
 def autocompleteModel(request):
     if request.is_ajax():
         q = request.GET.get('term', '')
-        search_qs = ProductDb.objects.filter(name__istartswith=q)
+        search_qs = ProductDb.objects.filter(name__istartswith=q)[:20]
         results = []
         for p in search_qs:
             results.append(p.name)
@@ -33,59 +33,79 @@ def index(request):
     return HttpResponse(template.render(request=request))
 
 
-"""def home(request):
-    template = loader.get_template('products/index.html')
-    return HttpResponse(template.render(request=request))"""
-
-
 def results(request):
-    if request.method == 'POST':
-        form = ProductSearch(request.POST)
-        if form.is_valid():
-            """name = form.cleaned_data['name']
-            product = ProductDb.objects.filter(name=name)
-            if not product.exists():
-                messages.warning(request, 'Produit inconnu, faites une autre reherche')
-                HttpResponseRedirect(request.META.get('HTTP_REFERER'))"""
-            try:
-                name = form.cleaned_data['name']
-                ProductDb.objects.filter(name=name)
-            except AttributeError:
-                messages.warning(request, 'Produit inconnu, faites une autre reherche')
-                return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-        else:
-            messages.warning(request, 'Aucun produit saisi, recommencez')
-            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-    if request.method == 'GET':
-        query = request.GET.get('query')
-
-        product = ProductDb.objects.filter(name__icontains=query).order_by('name').first()
-        substitutes_list = ProductDb.objects.filter(category=product.category, nutriscore__lt=product.nutriscore).order_by('nutriscore')
-        paginator = Paginator(substitutes_list, 6)
-        page_number = request.GET.get('page')
-
+    query = request.GET.get('query')
+    if query == '':
+        messages.error(request, 'Vous n\'avez saisi aucun produit', extra_tags='toaster')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
         try:
-            substitutes = paginator.page(page_number)
-        except PageNotAnInteger:
-            substitutes = paginator.page(1)
-        except EmptyPage:
-            substitutes = paginator.page(paginator.num_pages)
-        context = {
+            product = ProductDb.objects.filter(name__icontains=query).order_by('name').first()
+            substitutes_list = ProductDb.objects.filter(category=product.category,
+                                                        nutriscore__lt=product.nutriscore).order_by('nutriscore')
+            paginator = Paginator(substitutes_list, 6)
+            page_number = request.GET.get('page')
+
+            try:
+                substitutes = paginator.page(page_number)
+            except PageNotAnInteger:
+                substitutes = paginator.page(1)
+            except EmptyPage:
+                substitutes = paginator.page(paginator.num_pages)
+            context = {
                 'product': product,
                 'substitutes': substitutes,
                 'paginate': True,
                 'query': query,
-                #'user_substitutions': request.user.substitutes,
+                # 'user_substitutions': request.user.substitutes,
                 'page_number': page_number,
-        }
-        return render(request, 'products/results.html', context)
+            }
+            return render(request, 'products/results.html', context)
+        except AttributeError:
+            messages.error(request, 'Produit inconnu, faites une autre recherche', extra_tags='toaster')
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
 
 
 
 
+
+    #if request.method == 'GET':
+        #form = ProductSearch()
+        #return render(request, 'products/results.html', {'form': form})
+
+    #if request.method == 'POST':
+        #form = ProductSearch(request.POST)
+        #if form.is_valid():
+            #name = form.cleaned_data['name']
+            #"roductDb.objects.filter(name=name)
+
+
+            #if post_product is None:
+                #messages.warning(request, 'Produit inconnu, faites une autre recherche')
+
+
+
+            #else:
+                #messages.warning(request, 'Produit inconnu, faites une autre recherche')
+                #print('toto 1')
+                #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+        #else:
+            #messages.warning(request, 'Aucun produit saisi, recommencez')
+            #print('toto 2')
+            #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+            #try:
+                #name = form.cleaned_data['name']
+                #ProductDb.objects.filter(name=name)
+                #query = request.GET.get('product')
+
+            #except AttributeError:
+                #messages.warning(request, 'Produit inconnu, faites une autre recherche')
+                #print('toto 1')
+                #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))"""
 
 """@login_required
 def save_in_db(request, substitute_id, product_id, query, page_number):
@@ -160,3 +180,7 @@ def detail(request, product_id):
         'product_url': product.url,
     }
     return render(request, 'products/product.html', context)
+
+
+def legal_notice(request):
+    return render(request, 'products/legal_notice.html')

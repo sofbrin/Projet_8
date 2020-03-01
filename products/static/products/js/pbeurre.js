@@ -3,7 +3,7 @@ $(document).ready(function () {
   // Autocompletion
   $(".searchInput").autocomplete ({
     source: "/products/autocomplete/",
-    minLength: 2,
+    minLength: 1,
   });
 
   // Save product in db
