@@ -134,12 +134,14 @@ def save_in_db(request):
     try:
         UserPersonalDb.objects.get(original_product=original_product, replaced_product=replaced_product,
                                    user=request.user)
+        messages.error(request, 'Ce produit est déjà dans votre espace', extra_tags='toaster')
         data = {
             'is_in_db': True
         }
     except ObjectDoesNotExist:
         UserPersonalDb.objects.create(original_product=original_product, replaced_product=replaced_product,
                                       user=request.user)
+        messages.success(request, 'Ce produit a bien été enregistré')
         data = {
             'is_created': True
         }
