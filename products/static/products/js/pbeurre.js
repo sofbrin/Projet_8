@@ -26,14 +26,14 @@ $(document).ready(function () {
         data: JSON.stringify({substitute_id:substitute_id, product_id:product_id}),
         contentType: 'application/json; charset=utf-8',
 
-        /*success: function(data) {
+        success: function(data) {
             if (data.is_created) {
-                alert("Ce produit a bien été enregistré dans votre espace");
+                toastr.success(data, "Ce produit a bien été enregistré dans votre espace");
             }
             else if (data.is_in_db) {
-                alert("Ce produit est déjà dans votre espace");
+                toastr.error(data, "Ce produit est déjà dans votre espace");
             }
-        }*/
+        }
     })
   });
 })

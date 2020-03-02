@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-#from .views import ProductAutocomplete
+
 
 urlpatterns = [
     path('results', views.results, name='results'),

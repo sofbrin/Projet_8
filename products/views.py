@@ -66,47 +66,6 @@ def results(request):
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-
-
-
-
-
-    #if request.method == 'GET':
-        #form = ProductSearch()
-        #return render(request, 'products/results.html', {'form': form})
-
-    #if request.method == 'POST':
-        #form = ProductSearch(request.POST)
-        #if form.is_valid():
-            #name = form.cleaned_data['name']
-            #"roductDb.objects.filter(name=name)
-
-
-            #if post_product is None:
-                #messages.warning(request, 'Produit inconnu, faites une autre recherche')
-
-
-
-            #else:
-                #messages.warning(request, 'Produit inconnu, faites une autre recherche')
-                #print('toto 1')
-                #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-        #else:
-            #messages.warning(request, 'Aucun produit saisi, recommencez')
-            #print('toto 2')
-            #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-
-            #try:
-                #name = form.cleaned_data['name']
-                #ProductDb.objects.filter(name=name)
-                #query = request.GET.get('product')
-
-            #except AttributeError:
-                #messages.warning(request, 'Produit inconnu, faites une autre recherche')
-                #print('toto 1')
-                #return HttpResponseRedirect(request.META.get('HTTP_REFERER'))"""
-
 """@login_required
 def save_in_db(request, substitute_id, product_id, query, page_number):
     substitute = ProductDb.objects.get(pk=substitute_id)
@@ -134,14 +93,12 @@ def save_in_db(request):
     try:
         UserPersonalDb.objects.get(original_product=original_product, replaced_product=replaced_product,
                                    user=request.user)
-        messages.error(request, 'Ce produit est déjà dans votre espace', extra_tags='toaster')
         data = {
             'is_in_db': True
         }
     except ObjectDoesNotExist:
         UserPersonalDb.objects.create(original_product=original_product, replaced_product=replaced_product,
                                       user=request.user)
-        messages.success(request, 'Ce produit a bien été enregistré')
         data = {
             'is_created': True
         }
