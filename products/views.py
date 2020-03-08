@@ -14,6 +14,7 @@ from products.models import ProductDb, UserPersonalDb
 
 
 def autocompleteModel(request):
+    """ Autocompletion in searchBar """
     if request.is_ajax():
         q = request.GET.get('term', '')
         search_qs = ProductDb.objects.filter(name__istartswith=q).order_by('name')[:20]
@@ -28,11 +29,13 @@ def autocompleteModel(request):
 
 
 def index(request):
+    """ Rendering home page """
     template = loader.get_template('products/index.html')
     return HttpResponse(template.render(request=request))
 
 
 def results(request):
+    """ Rendering the substitutes' search results """
     page_number = 1
     query = ''
 
@@ -54,7 +57,8 @@ def results(request):
                                                         nutriscore__lt=product.nutriscore).order_by('nutriscore')
             user_substitutes = []
             if request.user.is_authenticated:
-                user_substitutes = UserPersonalDb.objects.filter(user=request.user).values_list('replaced_product__id', flat=True)
+                user_substitutes = UserPersonalDb.objects.filter(user=request.user).values_list('replaced_product__id',
+                                                                                                flat=True)
 
             paginator = Paginator(substitutes_list, 6)
 
@@ -82,24 +86,10 @@ def results(request):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-
-"""@login_required
-def save_in_db(request, substitute_id, product_id, query, page_number):
-    substitute = ProductDb.objects.get(pk=substitute_id)
-    product = ProductDb.objects.get(pk=product_id)
-    try:
-        UserPersonalDb.objects.get(original_product=product, replaced_product=substitute, user=request.user)
-        messages.warning(request, 'Ce produit est déjà dans votre espace personnel')
-        return HttpResponseRedirect(reverse('results') + '?query=' + query + '&page=' + page_number)
-    except ObjectDoesNotExist:
-        UserPersonalDb.objects.create(original_product=product, replaced_product=substitute, user=request.user)
-        messages.success(request, 'Le produit a été enregistré dans votre espace personnel')
-        return HttpResponseRedirect(reverse('results') + '?query=' + query + '&page=' + page_number)"""
-
-
 @login_required
 @require_http_methods(['POST'])
 def save_in_db(request):
+    """ Saving product in user personal db with AJAX """
     body = json.loads(request.body)
     product_id = body['product_id']
     substitute_id = body['substitute_id']
@@ -124,6 +114,7 @@ def save_in_db(request):
 
 
 def my_substitutes(request):
+    """ Rendering the user personal db """
     if not request.user.is_authenticated:
         messages.error(request, 'Vous devez vous connecter pour accéder à votre espace', extra_tags='toaster')
         return HttpResponseRedirect(reverse('login'))
@@ -147,6 +138,7 @@ def my_substitutes(request):
 
 
 def detail(request, product_id):
+    """ Rendering a product's details """
     product = ProductDb.objects.get(pk=product_id)
     context = {
         'product_id': product.id,
@@ -163,4 +155,21 @@ def detail(request, product_id):
 
 
 def legal_notice(request):
+    """ Rendering the legal notice """
     return render(request, 'products/legal_notice.html')
+
+
+""" Saving product in db with Django
+@login_required
+def save_in_db(request, substitute_id, product_id, query, page_number):
+
+    substitute = ProductDb.objects.get(pk=substitute_id)
+    product = ProductDb.objects.get(pk=product_id)
+    try:
+        UserPersonalDb.objects.get(original_product=product, replaced_product=substitute, user=request.user)
+        messages.warning(request, 'Ce produit est déjà dans votre espace personnel')
+        return HttpResponseRedirect(reverse('results') + '?query=' + query + '&page=' + page_number)
+    except ObjectDoesNotExist:
+        UserPersonalDb.objects.create(original_product=product, replaced_product=substitute, user=request.user)
+        messages.success(request, 'Le produit a été enregistré dans votre espace personnel')
+        return HttpResponseRedirect(reverse('results') + '?query=' + query + '&page=' + page_number)"""

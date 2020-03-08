@@ -26,15 +26,20 @@
           <div class="mt-5">
             <img src="{{ substitute.replaced_product.image }}" class="img-fluid img-product">
               {% if substitute.nutriscore == "a" %}
-                <span class="badge-pill badge-success badge-nutriscore text-uppercase">{{ substitute.nutriscore }}</span>
+                <span class="badge-pill badge-success badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+                </span>
               {% elif substitute.nutriscore == "b" %}
-                <span class="badge-pill badge-light badge-nutriscore text-uppercase">{{ substitute.nutriscore }}</span>
+                <span class="badge-pill badge-light badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+                </span>
               {% elif substitute.nutriscore == "c" %}
-                <span class="badge-pill badge-primary badge-nutriscore text-uppercase">{{ substitute.nutriscore }}</span>
+                <span class="badge-pill badge-primary badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+                </span>
               {% elif substitute.nutriscore == "d" %}
-                <span class="badge-pill badge-warning badge-nutriscore text-uppercase">{{ substitute.nutriscore }}</span>
+                <span class="badge-pill badge-warning badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+                </span>
               {% elif substitute.nutriscore == "e" %}
-                <span class="badge-pill badge-danger badge-nutriscore text-uppercase">{{ substitute.nutriscore }}</span>
+                <span class="badge-pill badge-danger badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+                </span>
               {% endif %}
             <div class="container-textproduct">
               <h6><strong>{{ substitute.replaced_product.name }}</strong></h6>
@@ -53,7 +58,8 @@
           <ul class="pagination pagination-md">
             {% if substitutes.has_previous %}
               <li class="page-item">
-                <a href="?query={{ query}}&page={{ substitutes.previous_page_number }}" class="page-link" aria-label="Previous">
+                <a href="?query={{ query}}&page={{ substitutes.previous_page_number }}" class="page-link"
+                   aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                   <span class="sr-only">Previous</span>
                 </a>

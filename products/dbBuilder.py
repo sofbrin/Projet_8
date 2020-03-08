@@ -3,7 +3,13 @@ from django.core.exceptions import ObjectDoesNotExist
 from products.models import CategoryDb, ProductDb
 
 
+####################################################################
+"""   SCRIPT TO INITIALIZE THE DB THROUGH OPEN FOOD FACTS' API   """
+####################################################################
+
+
 def select_categories(limit_cat):
+    """ Selecting the categories according the number entered by the user (management command: populateDb.py) """
     if CategoryDb.objects.all().count() != 0:
         return
 
@@ -19,6 +25,7 @@ def select_categories(limit_cat):
 
 
 def select_products(category):
+    """ Selecting 20 products per categories according to criteria defined in params and creating the db """
     selected_prod = []
     page = 1
 

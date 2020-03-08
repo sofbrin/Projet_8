@@ -343,7 +343,16 @@ header.substitutehead h1 {
   padding: 5px;
   border-radius: 10px;
 }
-
+.btn-save {
+  color: black;
+}
+.btn-save:hover {
+  color: white;
+}
+.btn-outline-secondary:hover {
+  color: grey;
+  pointer-events: none;
+}
 
 /* IMAGES - ICONS */
 #imgCol, #imgRem {
@@ -357,6 +366,9 @@ header.substitutehead h1 {
   margin: 0px 0px;
   border: 1px solid dark;
   border-radius: 10px;
+}
+.img-opacity {
+  opacity: 0.4;
 }
 .phoneIcon, .emailIcon {
   font-size: 100px;

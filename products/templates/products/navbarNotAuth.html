@@ -1,4 +1,3 @@
-
   <!-- Navbar when user is not authenticated -->
   {% load static %}
   <div class="card">
@@ -7,17 +6,15 @@
         <a class="navbar-brand js-scroll-trigger" href="{% url 'home' %}#page-top">
           <img src="{% static 'products/img/logo_40x40.png' %}">  Pur Beurre
         </a>
-        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false"
+                aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarResponsive">
           <ul class="navbar-nav ml-auto my-2 my-lg-0">
             <li class="nav-item">
               {% include 'products/searchBar.html' %}
-              <!--<form class="input-group">
-                <input class="form-control searchbar1" type="text" placeholder="Produit" aria-describedby="search">
-                <button class="btn btn-outline-dark" type="submit">Chercher</button>
-              </form>-->
             </li>
             <li class="nav-item">
               <a class="nav-link js-scroll-trigger" href="{% url 'signup' %}">

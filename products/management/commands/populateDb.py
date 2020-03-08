@@ -9,9 +9,9 @@ class Command(BaseCommand, ABC):
 
     def add_arguments(self, parser):
 
-        parser.add_argument('nb_categories',  type=int, default=15, nargs='?', help='choisir le nb de catégories')
+        parser.add_argument('nb_categories',  type=int, default=15, nargs='?', help='choisir le nb de catégories en '
+                                                                                    'entrant un chiffre entre 5 et 20')
 
     def handle(self, *args, **options):
         print(options['nb_categories'])
         select_categories(options['nb_categories'])
-

@@ -43,29 +43,38 @@
         {% for substitute in substitutes %}
         <div class="col-lg-4 col-md-6">
           <div class="mt-5">
-            <img src="{{ substitute.image }}" class="img-fluid img-product">
-
+            {% if substitute.id in user_substitutions %}
+              <img src="{{ substitute.image }}" class="img-fluid img-product img-opacity">
+            {% else %}
+              <img src="{{ substitute.image }}" class="img-fluid img-product">
+            {% endif %}
               {% if substitute.nutriscore == "a" %}
-                <span class="badge-pill badge-success badge-nutriscore text-uppercase">{{ substitute.nutriscore }}</span>
+                <span class="badge-pill badge-success badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+                </span>
               {% elif substitute.nutriscore == "b" %}
-                <span class="badge-pill badge-light badge-nutriscore text-uppercase">{{ substitute.nutriscore }}</span>
+                <span class="badge-pill badge-light badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+                </span>
               {% elif substitute.nutriscore == "c" %}
-                <span class="badge-pill badge-primary badge-nutriscore text-uppercase">{{ substitute.nutriscore }}</span>
+                <span class="badge-pill badge-primary badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+                </span>
               {% elif substitute.nutriscore == "d" %}
-                <span class="badge-pill badge-warning badge-nutriscore text-uppercase">{{ substitute.nutriscore }}</span>
+                <span class="badge-pill badge-warning badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+                </span>
               {% elif substitute.nutriscore == "e" %}
-                <span class="badge-pill badge-danger badge-nutriscore text-uppercase">{{ substitute.nutriscore }}</span>
+                <span class="badge-pill badge-danger badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+                </span>
               {% endif %}
             <div class="container-textproduct">
               <h6><strong>{{ substitute.name }}</strong></h6>
                 <a href="{% url 'product' product_id=substitute.id %}">Fiche produit</a>
 
                 {% if user.is_authenticated %}
-                    <button class="btn btn-outline-dark btn-save" data-subid="{{ substitute.id }}" data-prodid="{{ product.id }}" data-token="{{ csrf_token }}">
+                    <button class="btn btn-outline-dark btn-save" data-subid="{{ substitute.id }}"
+                            data-prodid="{{ product.id }}" data-token="{{ csrf_token }}">
                       {% if substitute.id in user_substitutions %}
-                        <i class="fas fa-save" style="color: green"><span> Sauvegarder</span></i>
+                        <i class="fas fa-save btn-outline-secondary"><span> Sauvegarder</span></i>
                       {% else %}
-                        <i class="fas fa-save" style="color: red"><span> Sauvegarder </span></i>
+                        <i class="fas fa-save btn-save"><span> Sauvegarder </span></i>
                       {% endif %}
                     </button>
                 {% endif %}
@@ -80,7 +89,8 @@
           <ul class="pagination pagination-md">
             {% if substitutes.has_previous %}
               <li class="page-item">
-                <a href="?query={{ query }}&page={{ substitutes.previous_page_number }}" class="page-link" aria-label="Previous">
+                <a href="?query={{ query }}&page={{ substitutes.previous_page_number }}" class="page-link"
+                   aria-label="Previous">
                   <span aria-hidden="true">&laquo;</span>
                   <span class="sr-only">Previous</span>
                 </a>
