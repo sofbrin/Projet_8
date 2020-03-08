@@ -176,7 +176,7 @@ header.substitutehead h1 {
   border-radius: 20px;
 }
 
-@media (min-width: 576px) {
+@media (max-width: 576px) {
   header.masthead h1 header,.accounthead h1, header.resultshead h1, header.substitutehead h1, .productheader h1 {
     font-size: 2rem;
   }

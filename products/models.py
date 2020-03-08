@@ -37,9 +37,10 @@ class ProductDb(BaseModel):
 class UserPersonalDb(BaseModel):
     original_product = models.ForeignKey(ProductDb, on_delete=models.CASCADE, related_name='original_product')
     replaced_product = models.ForeignKey(ProductDb, on_delete=models.CASCADE, related_name='replaced_product')
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='substitutes')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user')
 
     class Meta:
+        ordering = ['id']
         constraints = [
             models.UniqueConstraint(fields=['original_product', 'replaced_product', 'user'], name='no_double')
         ]

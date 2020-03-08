@@ -11,13 +11,12 @@ from django.urls import reverse
 from django.views.decorators.http import require_http_methods
 
 from products.models import ProductDb, UserPersonalDb
-from products.forms import ProductSearch
 
 
 def autocompleteModel(request):
     if request.is_ajax():
         q = request.GET.get('term', '')
-        search_qs = ProductDb.objects.filter(name__istartswith=q)[:20]
+        search_qs = ProductDb.objects.filter(name__istartswith=q).order_by('name')[:20]
         results = []
         for p in search_qs:
             results.append(p.name)
@@ -34,17 +33,30 @@ def index(request):
 
 
 def results(request):
-    query = request.GET.get('query')
+    page_number = 1
+    query = ''
+
+    if request.method == 'GET':
+        query = request.GET.get('query')
+        page_number = request.GET.get('page')
+
+    elif request.method == 'POST':
+        query = request.POST.get('query')
+
     if query == '':
         messages.error(request, 'Vous n\'avez saisi aucun produit', extra_tags='toaster')
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
-    else:
+
+    elif len(query) > 2:
         try:
             product = ProductDb.objects.filter(name__icontains=query).order_by('name').first()
             substitutes_list = ProductDb.objects.filter(category=product.category,
                                                         nutriscore__lt=product.nutriscore).order_by('nutriscore')
+            user_substitutes = []
+            if request.user.is_authenticated:
+                user_substitutes = UserPersonalDb.objects.filter(user=request.user).values_list('replaced_product__id', flat=True)
+
             paginator = Paginator(substitutes_list, 6)
-            page_number = request.GET.get('page')
 
             try:
                 substitutes = paginator.page(page_number)
@@ -52,18 +64,23 @@ def results(request):
                 substitutes = paginator.page(1)
             except EmptyPage:
                 substitutes = paginator.page(paginator.num_pages)
+
             context = {
                 'product': product,
                 'substitutes': substitutes,
                 'paginate': True,
                 'query': query,
-                # 'user_substitutions': request.user.substitutes,
+                'user_substitutions': user_substitutes,
                 'page_number': page_number,
             }
             return render(request, 'products/results.html', context)
         except AttributeError:
             messages.error(request, 'Produit inconnu, faites une autre recherche', extra_tags='toaster')
             return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+    else:
+        messages.error(request, 'Produit inconnu, faites une autre recherche', extra_tags='toaster')
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 
 """@login_required
@@ -107,6 +124,10 @@ def save_in_db(request):
 
 
 def my_substitutes(request):
+    if not request.user.is_authenticated:
+        messages.error(request, 'Vous devez vous connecter pour accéder à votre espace', extra_tags='toaster')
+        return HttpResponseRedirect(reverse('login'))
+
     substitutes_list = UserPersonalDb.objects.filter(user=request.user)
 
     paginator = Paginator(substitutes_list, 6)
