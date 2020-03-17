@@ -25,20 +25,20 @@
         <div class="col-lg-4 col-md-6">
           <div class="mt-5">
             <img src="{{ substitute.replaced_product.image }}" class="img-fluid img-product">
-              {% if substitute.nutriscore == "a" %}
-                <span class="badge-pill badge-success badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+              {% if substitute.replaced_product.nutriscore == "a" %}
+                <span class="badge-pill badge-light badge-nutriscore text-uppercase">{{ substitute.replaced_product.nutriscore }}
                 </span>
-              {% elif substitute.nutriscore == "b" %}
-                <span class="badge-pill badge-light badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+              {% elif substitute.replaced_product.nutriscore == "b" %}
+                <span class="badge-pill badge-success badge-nutriscore text-uppercase">{{ substitute.replaced_product.nutriscore }}
                 </span>
-              {% elif substitute.nutriscore == "c" %}
-                <span class="badge-pill badge-primary badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+              {% elif substitute.replaced_product.nutriscore == "c" %}
+                <span class="badge-pill badge-primary badge-nutriscore text-uppercase">{{ substitute.replaced_product.nutriscore }}
                 </span>
-              {% elif substitute.nutriscore == "d" %}
-                <span class="badge-pill badge-warning badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+              {% elif substitute.replaced_product.nutriscore == "d" %}
+                <span class="badge-pill badge-warning badge-nutriscore text-uppercase">{{ substitute.replaced_product.nutriscore }}
                 </span>
-              {% elif substitute.nutriscore == "e" %}
-                <span class="badge-pill badge-danger badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+              {% elif substitute.replaced_product.nutriscore == "e" %}
+                <span class="badge-pill badge-danger badge-nutriscore text-uppercase">{{ substitute.replaced_product.nutriscore }}
                 </span>
               {% endif %}
             <div class="container-textproduct">

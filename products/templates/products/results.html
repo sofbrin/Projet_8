@@ -8,9 +8,9 @@
       <div class="row align-items-center justify-content-center text-center">
         <h1 class="text-uppercase font-weight-bold">{{ product.name }}
           {% if product.nutriscore == "a" %}
-            <span class="badge-pill badge-success badge-title text-uppercase">{{ product.nutriscore }}</span>
-          {% elif product.nutriscore == "b" %}
             <span class="badge-pill badge-light badge-title text-uppercase">{{ product.nutriscore }}</span>
+          {% elif product.nutriscore == "b" %}
+            <span class="badge-pill badge-success badge-title text-uppercase">{{ product.nutriscore }}</span>
           {% elif product.nutriscore == "c" %}
             <span class="badge-pill badge-primary badge-title text-uppercase">{{ product.nutriscore }}</span>
           {% elif product.nutriscore == "d" %}
@@ -49,10 +49,10 @@
               <img src="{{ substitute.image }}" class="img-fluid img-product">
             {% endif %}
               {% if substitute.nutriscore == "a" %}
-                <span class="badge-pill badge-success badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+                <span class="badge-pill badge-light badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
                 </span>
               {% elif substitute.nutriscore == "b" %}
-                <span class="badge-pill badge-light badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
+                <span class="badge-pill badge-success badge-nutriscore text-uppercase">{{ substitute.nutriscore }}
                 </span>
               {% elif substitute.nutriscore == "c" %}
                 <span class="badge-pill badge-primary badge-nutriscore text-uppercase">{{ substitute.nutriscore }}

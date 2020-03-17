@@ -31,7 +31,7 @@ $(document).ready(function () {
                 toastr.success(data, "Ce produit a bien été enregistré dans votre espace");
             }
             else if (data.is_in_db) {
-                toastr.error(data, "Ce produit est déjà dans votre espace");
+                toastr.error(data, "Cette substitution est déjà dans votre espace");
             }
         }
     })

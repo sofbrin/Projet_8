@@ -40,11 +40,11 @@ def results(request):
     query = ''
 
     if request.method == 'GET':
-        query = request.GET.get('query')
-        page_number = request.GET.get('page')
+        query = request.GET.get('query', '')
+        page_number = request.GET.get('page', 1)
 
     elif request.method == 'POST':
-        query = request.POST.get('query')
+        query = request.POST.get('query', '')
 
     if query == '':
         messages.error(request, 'Vous n\'avez saisi aucun produit', extra_tags='toaster')
@@ -53,8 +53,8 @@ def results(request):
     elif len(query) > 2:
         try:
             product = ProductDb.objects.filter(name__icontains=query).order_by('name').first()
-            substitutes_list = ProductDb.objects.filter(category=product.category,
-                                                        nutriscore__lt=product.nutriscore).order_by('nutriscore')
+            substitutes_list = ProductDb.objects.filter(category=product.category, nutriscore__lt=product.nutriscore)\
+                .order_by('nutriscore').distinct()
             user_substitutes = []
             if request.user.is_authenticated:
                 user_substitutes = UserPersonalDb.objects.filter(user=request.user).values_list('replaced_product__id',
@@ -64,11 +64,8 @@ def results(request):
 
             try:
                 substitutes = paginator.page(page_number)
-            except PageNotAnInteger:
-                substitutes = paginator.page(1)
             except EmptyPage:
                 substitutes = paginator.page(paginator.num_pages)
-
             context = {
                 'product': product,
                 'substitutes': substitutes,
