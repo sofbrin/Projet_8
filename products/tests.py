@@ -89,19 +89,26 @@ class TestViews(TestCase):
         original_product = self.product
         replaced_product = self.substitute1
         user = self.user
-        UserPersonalDb.objects.create(original_product=original_product, replaced_product=replaced_product, user=user)
+        #self.client.login(username='arthurH@gmail.com', password='1234')
+        substitution = UserPersonalDb.objects.create(original_product=original_product,
+                                                     replaced_product=replaced_product, user=user)
+        print(substitution)
         data = {'original_product': 'nutella', 'replaced_product': 'nutella bio', 'user': 'arthurH@gmail.com'}
-        response = self.client.post(reverse('results'), data)
+        response = self.client.post(reverse('save_in_db'), data)
         self.assertEqual(response.status_code, 302)
+        self.assertEqual(substitution.original_product.name, 'nutella')
 
-    """def test_save_in_db_returns_prod_already_in_db(self):
+    def test_save_in_db_returns_prod_already_in_db(self):
         original_product = self.product
         replaced_product = self.substitute1
         user = self.user
-        UserPersonalDb.objects.get(original_product=original_product, replaced_product=replaced_product, user=user)
+        #self.client.login(username='arthurH@gmail.com', password='1234')
+        UserPersonalDb.objects.create(original_product=original_product, replaced_product=replaced_product, user=user)
+        substitution = UserPersonalDb.objects.get(original_product=original_product, replaced_product=replaced_product, user=user)
         data = {'original_product': 'nutella', 'replaced_product': 'nutella bio', 'user': 'arthurH@gmail.com'}
-        response = self.client.post(reverse('results'), data)
-        self.assertEqual(response.status_code, 302)"""
+        response = self.client.post(reverse('save_in_db'), data)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(substitution.replaced_product, 'nutella')
 
 
 """class ProductTest(TestCase):
