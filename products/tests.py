@@ -93,7 +93,7 @@ class TestViews(TestCase):
         self.client.login(username='arthurH@gmail.com', password='1234')
         print(original_product, replaced_product)
         previous_db_count = UserPersonalDb.objects.count()
-        data = {'replaced_product': replaced_product, 'original_product': original_product}
+        data = {'nutella bio': replaced_product, 'nutella': original_product}
         print(data)
         response = self.client.post(reverse('save_in_db'), data)
         new_db_count = UserPersonalDb.objects.count()
