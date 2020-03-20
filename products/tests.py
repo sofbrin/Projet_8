@@ -3,6 +3,8 @@ import json
 from django.test import TestCase, SimpleTestCase
 from django.urls import reverse, resolve
 from django.contrib.auth.decorators import login_required
+from psycopg2.extensions import JSON
+
 from products.models import ProductDb, CategoryDb, UserPersonalDb
 from users.models import User
 
@@ -86,19 +88,19 @@ class TestViews(TestCase):
         self.assertEqual(response.status_code, 302)
 
     def test_save_in_db_returns_200(self):
-        original_product = self.product
-        replaced_product = self.substitute1
-        user = self.user
-        #self.client.login(username='arthurH@gmail.com', password='1234')
-        substitution = UserPersonalDb.objects.create(original_product=original_product,
-                                                     replaced_product=replaced_product, user=user)
-        print(substitution)
-        data = {'original_product': 'nutella', 'replaced_product': 'nutella bio', 'user': 'arthurH@gmail.com'}
+        original_product = self.product.id
+        replaced_product = self.substitute1.id
+        self.client.login(username='arthurH@gmail.com', password='1234')
+        print(original_product, replaced_product)
+        previous_db_count = UserPersonalDb.objects.count()
+        data = {'replaced_product': replaced_product, 'original_product': original_product}
+        print(data)
         response = self.client.post(reverse('save_in_db'), data)
+        new_db_count = UserPersonalDb.objects.count()
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(substitution.original_product.name, 'nutella')
+        self.assertEqual(previous_db_count + 1, new_db_count)
 
-    def test_save_in_db_returns_prod_already_in_db(self):
+    """def test_save_in_db_returns_prod_already_in_db(self):
         original_product = self.product
         replaced_product = self.substitute1
         user = self.user
@@ -108,7 +110,8 @@ class TestViews(TestCase):
         data = {'original_product': 'nutella', 'replaced_product': 'nutella bio', 'user': 'arthurH@gmail.com'}
         response = self.client.post(reverse('save_in_db'), data)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(substitution.replaced_product, 'nutella')
+        self.assertEqual(substitution.replaced_product, 'nutella')"""
+
 
 
 """class ProductTest(TestCase):
