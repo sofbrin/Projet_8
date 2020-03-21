@@ -87,7 +87,17 @@ def results(request):
 @require_http_methods(['POST'])
 def save_in_db(request):
     """ Saving product in user personal db with AJAX """
-    body = json.loads(request.body)
+    print(request.body)
+    print(request.POST)
+    if request.is_ajax():
+        body = json.loads(request.body)
+    else:
+        body = request.POST
+    """try:
+        body = json.loads(request.body)
+    except json.decoder.JSONDecodeError:
+        body = request.body
+        print(body)"""
     product_id = body['product_id']
     substitute_id = body['substitute_id']
 
