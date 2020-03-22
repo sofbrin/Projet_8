@@ -61,5 +61,9 @@ def logout_view(request):
 
 def account_view(request):
     """ Rendering the user's account page """
+    if not request.user.is_authenticated:
+        messages.error(request, 'Vous devez vous connecter pour accéder à votre compte', extra_tags='toaster')
+        return HttpResponseRedirect(reverse('login'))
+
     template = loader.get_template('users/account.html')
     return HttpResponse(template.render(request=request))
