@@ -1,14 +1,8 @@
-import unittest
-import json
 from django.test import TestCase, SimpleTestCase
-from django.urls import reverse, resolve
-from django.contrib.auth.decorators import login_required
-from psycopg2.extensions import JSON
+from django.urls import reverse
 
 from products.models import ProductDb, CategoryDb, UserPersonalDb
 from users.models import User
-
-# Create your tests here.
 
 
 class IndexPageTest(SimpleTestCase):
@@ -16,7 +10,7 @@ class IndexPageTest(SimpleTestCase):
         response = self.client.get(reverse('home'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'products/index.html')
-        
+
 
 class LegalNoticeTest(SimpleTestCase):
     def test_legal_notice_returns_200(self):

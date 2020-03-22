@@ -1,10 +1,7 @@
 from django.test import TestCase
 from django.urls import reverse
 from products.models import User
-from users.forms import RegistrationForm, LoginForm
 
-
-# Create your tests here.
 
 class TestViewsUsers(TestCase):
 
