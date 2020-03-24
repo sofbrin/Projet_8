@@ -62,26 +62,6 @@ class TestViewsProducts(TestCase):
         for substitute in substitutes:
             self.assertLess(substitute.nutriscore, product.nutriscore)
 
-    """def test_results_pagination_returns_6_substitutes(self):
-        page = 1
-        number_of_substitutes = 8
-        for substitute in range(number_of_substitutes):
-            ProductDb.objects.create(name='subTest', url='', image='', nutriscore='', fat=0, saturated_fat=0, sugar=0,
-                                     salt=0, category=self.category)
-        response = self.client.get(reverse('results'), {'query': page})
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue('paginate' in response.context)
-        self.assertTrue(response.context['paginate'])
-        self.assertTrue(len(response.context['substitutes']) == 6)
-
-    def test_results_pagination_returns_page_2(self):
-        page = 2
-        response = self.client.get(reverse('results') + {'query': page})
-        self.assertEqual(response.status_code, 302)
-        self.assertTrue('paginate' in response.context)
-        self.assertTrue(response.context['paginate'])
-        self.assertTrue(len(response.context['substitutes']) == 2)"""
-
     def test_results_returns_200(self):
         product = self.product
         response = self.client.post(reverse('results'), {'query': product})
