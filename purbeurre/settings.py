@@ -35,7 +35,6 @@ else:
 
 ALLOWED_HOSTS = ['purbeurre8app.herokuapp.com']
 
-
 # Application definition
 
 INSTALLED_APPS = [
