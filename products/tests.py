@@ -5,20 +5,6 @@ from products.models import ProductDb, CategoryDb, UserPersonalDb
 from users.models import User
 
 
-class IndexPageTest(SimpleTestCase):
-    def test_index_returns_200(self):
-        response = self.client.get(reverse('home'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'products/index.html')
-
-
-class LegalNoticeTest(SimpleTestCase):
-    def test_legal_notice_returns_200(self):
-        response = self.client.get(reverse('legal_notice'))
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'products/legal_notice.html')
-
-
 class TestViewsProducts(TestCase):
 
     def setUp(self):
@@ -81,8 +67,8 @@ class TestViewsProducts(TestCase):
         replaced_product = self.substitute1.id
         self.client.login(username='arthurH@gmail.com', password='1234')
         previous_db_count = UserPersonalDb.objects.count()
-        payloads = {'substitute_id': replaced_product, 'product_id': original_product}
-        response = self.client.post(reverse('save_in_db'), payloads)
+        data = {'substitute_id': replaced_product, 'product_id': original_product}
+        response = self.client.post(reverse('save_in_db'), data)
         new_db_count = UserPersonalDb.objects.count()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(previous_db_count + 1, new_db_count)
@@ -92,16 +78,30 @@ class TestViewsProducts(TestCase):
         replaced_product = self.substitute1.id
         self.client.login(username='arthurH@gmail.com', password='1234')
         previous_db_count = UserPersonalDb.objects.count()
-        payloads = {'substitute_id': replaced_product, 'product_id': original_product}
-        response = self.client.post(reverse('save_in_db'), payloads)
+        data = {'substitute_id': replaced_product, 'product_id': original_product}
+        response = self.client.post(reverse('save_in_db'), data)
         response_json = response.json()
         new_db_count = UserPersonalDb.objects.count()
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response_json['is_created'])
         self.assertEqual(previous_db_count + 1, new_db_count)
-        response2 = self.client.post(reverse('save_in_db'), payloads)
+        response2 = self.client.post(reverse('save_in_db'), data)
         response2_json = response2.json()
         last_db_count = UserPersonalDb.objects.count()
         self.assertEqual(response.status_code, 200)
         self.assertTrue(response2_json['is_in_db'])
         self.assertEqual(new_db_count, last_db_count)
+
+
+class IndexPageTest(SimpleTestCase):
+    def test_index_returns_200(self):
+        response = self.client.get(reverse('home'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'products/index.html')
+
+
+class LegalNoticeTest(SimpleTestCase):
+    def test_legal_notice_returns_200(self):
+        response = self.client.get(reverse('legal_notice'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'products/legal_notice.html')
