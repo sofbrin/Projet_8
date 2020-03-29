@@ -23,12 +23,8 @@ class UserManager(BaseUserManager):
         Create and save a user with the given email and password.
         """
         user = self.create_user(email, password=password, **extra_fields)
-        user.is_staff = True,
-        user.is_superuser = True,
-        if extra_fields.get('is_staff') is not True:
-            raise ValueError('Superuser must have is_staff=True')
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('Superuser must have is_superuser=True')
+        user.is_staff = True
+        user.is_superuser = True
         user.save(using=self.db)
         return user
 

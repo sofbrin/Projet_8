@@ -4,7 +4,7 @@ from users.forms import RegistrationForm, LoginForm
 from users.models import UserManager, User
 
 
-class TestModelsUsers(TestCase):
+class TestModelsUserManager(TestCase):
     def test_username_is_email(self):
         self.assertEqual(User.USERNAME_FIELD, 'email')
 
@@ -12,6 +12,13 @@ class TestModelsUsers(TestCase):
         user = User.objects.create_user('arthurH@gmail.com', '1234', first_name='Arthur')
         self.assertEqual(user.email, 'arthurH@gmail.com')
         self.assertEqual(user.first_name, 'Arthur')
+
+    def test_create_superuser(self):
+        superuser = User.objects.create_superuser('arthurH@gmail.com', '1234',  first_name='Arthur')
+        self.assertEqual(superuser.email, 'arthurH@gmail.com')
+        self.assertEqual(superuser.first_name, 'Arthur')
+        self.assertTrue(superuser.is_staff)
+        self.assertTrue(superuser.is_superuser)
 
 
 class TestFormsUsers(TestCase):
@@ -48,7 +55,6 @@ class TestViewsUsers(TestCase):
         self.user.save()
         self.data = {'email': 'arthurH@gmail.com', 'password': '1234'}
 
-
     def test_registration_returns_200(self):
         response = self.client.get(reverse('signup'))
         self.assertEqual(response.status_code, 200)
@@ -63,7 +69,6 @@ class TestViewsUsers(TestCase):
         self.client.logout()
         data = self.data
         response = self.client.post(reverse('login'), data, follow=True)
-        print(response.status_code)
         self.assertRedirects(response, reverse('home'), status_code=302, target_status_code=200)
 
     def test_logout_ok(self):
@@ -73,11 +78,8 @@ class TestViewsUsers(TestCase):
         self.assertRedirects(response, reverse('home'), status_code=302, target_status_code=200)
 
     def test_account_returns_200(self):
-        test = self.client.login(username='arthurH@gmail.com', password='1234')
-        print('TOTO', test)
-        print(self.user)
+        self.client.login(username='arthurH@gmail.com', password='1234')
         response = self.client.get(reverse('account'))
-        print(response)
         self.assertEqual(response.status_code, 200)
 
     def test_account_without_login(self):

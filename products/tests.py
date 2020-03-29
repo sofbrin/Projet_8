@@ -32,13 +32,11 @@ class TestViewsProducts(TestCase):
         response = self.client.get(reverse('my_substitutes'))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'products/my_substitutes.html')
-        print(response)
 
     def test_my_substitutes_returns_300_user_not_logged_in(self):
         self.client.logout()
         response = self.client.get(reverse('my_substitutes'))
         self.assertEqual(response.status_code, 302)
-        print(response)
 
     def test_results_returns_better_nutriscore(self):
         product = self.product
