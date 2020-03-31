@@ -32,7 +32,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'o=z8_es@ivafc5kw+qh(2k@2zsz&x6ti%-ssz
     DEBUG = False
 
 else:"""
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['purbeurre8app.herokuapp.com']
 
