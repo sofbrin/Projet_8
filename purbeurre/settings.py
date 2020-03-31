@@ -28,13 +28,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get('SECRET_KEY', 'o=z8_es@ivafc5kw+qh(2k@2zsz&x6ti%-sszdi1cf5tkk!hmm')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get('ENV', 'DEVELOPMENT') == 'PRODUCTION':
+"""if os.environ.get('ENV', 'DEVELOPMENT') == 'PRODUCTION':
     DEBUG = False
-    ALLOWED_HOSTS = ['purbeurre8app.herokuapp.com']
-else:
-    DEBUG = True
 
+else:"""
+DEBUG = False
 
+ALLOWED_HOSTS = ['purbeurre8app.herokuapp.com']
 
 # Application definition
 
