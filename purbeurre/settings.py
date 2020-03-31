@@ -31,8 +31,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'o=z8_es@ivafc5kw+qh(2k@2zsz&x6ti%-ssz
 """if os.environ.get('ENV', 'DEVELOPMENT') == 'PRODUCTION':
     DEBUG = False
 
-else:
-DEBUG = True"""
+else:"""
+DEBUG = True
 
 ALLOWED_HOSTS = ['purbeurre8app.herokuapp.com']
 
