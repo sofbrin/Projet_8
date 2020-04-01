@@ -31,11 +31,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'o=z8_es@ivafc5kw+qh(2k@2zsz&x6ti%-ssz
 if os.environ.get('ENV', 'DEVELOPMENT') == 'PRODUCTION':
     DEBUG_PROPAGATE_EXCEPTIONS = True
     DEBUG = False
+    ALLOWED_HOSTS = ['purbeurre8app.herokuapp.com']
 
 else:
     DEBUG = True
-
-ALLOWED_HOSTS = ['purbeurre8app.herokuapp.com']
 
 # Application definition
 
@@ -153,7 +152,7 @@ if os.environ.get('ENV') == 'PRODUCTION':
 
     # Simplified static file serving
     # https://warehouse.python.org/project/whitenoise
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
