@@ -25,10 +25,7 @@ Réalisation d'une application qui permet de trouver des substituts plus sains �
 **Créer et remplir la base de données** : la commande de lancement permet de sélectionner le nombre de catégories entre 5 et 20. 
 20 produits par catégories sont ensuite automatiquement sélectionnés.
 
-Commande de lancement = **_python manage.py populateDb 10_**
+- Commande de lancement = **_python manage.py populateDb 10_**
 
-**Lancer l'application** : **_python manage.py runserver_**
-
-
-
+- Lancer l'application : **_python manage.py runserver_**
 
