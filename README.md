@@ -1,4 +1,5 @@
-# Projet 8 - Plateforme PurBeurre ![navbar_purbeurre](products/static/products/img/HomePurBeurreReadme.png)
+![navbar_purbeurre](products/static/products/img/HomePurBeurreReadme.png)
+
 ### 1. Objet :
 
 Réalisation d'une application qui permet de trouver des substituts plus sains à des aliments trop gras ou trop sucrés à partir de recherches sur la plateforme libre et ouverte OpenFoodFacts dont l'objectif est de répertorier les caractéristiques nutritives de produits alimentaires commercialisés dans le monde entier.
