@@ -19,8 +19,6 @@ import dj_database_url
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -152,7 +150,7 @@ if os.environ.get('ENV') == 'PRODUCTION':
 
     # Simplified static file serving
     # https://warehouse.python.org/project/whitenoise
-    STATICFILES_STORAGE = 'purbeurre.storage.whiteNoiseStaticFilesStorage'
+    STATICFILES_STORAGE = 'purbeurre.storage.WhiteNoiseStaticFilesStorage'
 
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
