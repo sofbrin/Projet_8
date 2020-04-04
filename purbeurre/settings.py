@@ -141,7 +141,7 @@ USE_TZ = True
 # Static files settings
 #PROJECT_ROOT = BASE_DIR
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 STATIC_URL = '/static/'
 
 # Extra places for collectstatic to find static files
@@ -151,7 +151,7 @@ STATICFILES_DIRS = (
 
 # Simplified static file serving
 # https://warehouse.python.org/project/whitenoise
-STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
