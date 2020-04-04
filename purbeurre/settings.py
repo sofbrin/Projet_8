@@ -14,7 +14,7 @@ import os
 from os.path import normpath, join
 
 import django_heroku
-import dj_database_url
+#import dj_database_url
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -141,15 +141,15 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 if os.environ.get('ENV') == 'PRODUCTION':
 
     # Extra places for collectstatic to find static files
-   #STATICFILES_DIRS = (
-        #os.path.join(BASE_DIR, 'static'),
-    #)
+    STATICFILES_DIRS = (
+        os.path.join(BASE_DIR, 'static'),
+    )
 
     # Simplified static file serving
     # https://warehouse.python.org/project/whitenoise
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-    db_from_env = dj_database_url.config(conn_max_age=500)
-    DATABASES['default'].update(db_from_env)
+    #db_from_env = dj_database_url.config(conn_max_age=500)
+    #DATABASES['default'].update(db_from_env)
 
 django_heroku.settings(locals())
