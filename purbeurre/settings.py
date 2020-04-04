@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import os
 from os.path import normpath, join
 
+import django_heroku
 import dj_database_url
 
 
@@ -28,7 +29,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'o=z8_es@ivafc5kw+qh(2k@2zsz&x6ti%-ssz
 # SECURITY WARNING: don't run with debug turned on in production!
 if os.environ.get('ENV', 'DEVELOPMENT') == 'PRODUCTION':
     DEBUG_PROPAGATE_EXCEPTIONS = True
-    DEBUG = True
+    DEBUG = False
     ALLOWED_HOSTS = ['purbeurre8app.herokuapp.com']
 
 else:
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,7 +57,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 INTERNAL_IPS = ['127.0.0.1']
@@ -150,3 +151,5 @@ if os.environ.get('ENV') == 'PRODUCTION':
 
     db_from_env = dj_database_url.config(conn_max_age=500)
     DATABASES['default'].update(db_from_env)
+
+django_heroku.settings(locals())
