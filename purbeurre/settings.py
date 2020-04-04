@@ -134,23 +134,24 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+#STATIC_URL = '/static/'
+
+#if os.environ.get('ENV') == 'PRODUCTION':
+
+# Static files settings
+#PROJECT_ROOT = BASE_DIR
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
-if os.environ.get('ENV') == 'PRODUCTION':
+# Extra places for collectstatic to find static files
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
-    # Static files settings
-    PROJECT_ROOT = BASE_DIR
+# Simplified static file serving
+# https://warehouse.python.org/project/whitenoise
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
-
-    # Extra places for collectstatic to find static files
-    STATICFILES_DIRS = (
-        os.path.join(PROJECT_ROOT, 'static'),
-    )
-
-    # Simplified static file serving
-    # https://warehouse.python.org/project/whitenoise
-    STATICFILES_STORAGE = 'purbeurre.storage.WhiteNoiseStaticFilesStorage'
-
-    db_from_env = dj_database_url.config(conn_max_age=500)
-    DATABASES['default'].update(db_from_env)
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
