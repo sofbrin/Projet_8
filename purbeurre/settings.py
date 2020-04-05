@@ -26,14 +26,15 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'o=z8_es@ivafc5kw+qh(2k@2zsz&x6ti%-sszdi1cf5tkk!hmm')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-if os.environ.get('ENV', 'DEVELOPMENT') == 'PRODUCTION':
+ALLOWED_HOSTS = ['purbeurre8app.herokuapp.com', '127.0.0.1']
+DEBUG = True
+"""if os.environ.get('ENV', 'DEVELOPMENT') == 'PRODUCTION':
     DEBUG_PROPAGATE_EXCEPTIONS = True
     DEBUG = False
     ALLOWED_HOSTS = ['purbeurre8app.herokuapp.com']
 
 else:
-    DEBUG = True
+    DEBUG = True"""
 
 # Application definition
 
@@ -49,7 +50,6 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    #'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -59,7 +59,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-INTERNAL_IPS = ['127.0.0.1']
+#INTERNAL_IPS = ['127.0.0.1']
 
 ROOT_URLCONF = 'purbeurre.urls'
 
@@ -139,17 +139,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 if os.environ.get('ENV') == 'PRODUCTION':
-
-    # Extra places for collectstatic to find static files
-    #STATICFILES_DIRS = (
-        #os.path.join(BASE_DIR, 'static'),
-    #)
-
-    # Simplified static file serving
-    # https://warehouse.python.org/project/whitenoise
-    #STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-    #db_from_env = dj_database_url.config(conn_max_age=500)
-    #DATABASES['default'].update(db_from_env)
-
+    DEBUG = False
     django_heroku.settings(locals())
