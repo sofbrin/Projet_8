@@ -1,8 +1,31 @@
+from selenium import webdriver
+from django.test import LiveServerTestCase
 from django.test import TestCase, SimpleTestCase
 from django.urls import reverse
+from webdriver_manager.chrome import ChromeDriverManager
 
 from products.models import ProductDb, CategoryDb, UserPersonalDb
 from users.models import User
+
+
+class SeleniumTests(LiveServerTestCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.selenium = webdriver.Chrome(ChromeDriverManager().install())
+        cls.selenium.implicitly_wait(10)
+
+    @classmethod
+    def tearDownClass(cls):
+        cls.selenium.quit()
+        super().tearDownClass()
+
+    def test_link_product_redirects_OFF_detail_product(self):
+        self.selenium.get('http://127.0.0.1:8000/products/product/352/')
+        called_url = 'https://world.openfoodfacts.org/product/3272770003148/pure-goat-chavroux'
+        self.selenium.find_element_by_link_text("Voir la fiche sur le site d'Open Food Facts").click()
+        self.assertEqual(self.selenium.current_url, called_url)
 
 
 class TestViewsProducts(TestCase):

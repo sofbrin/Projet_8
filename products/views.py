@@ -87,8 +87,6 @@ def results(request):
 @require_http_methods(['POST'])
 def save_in_db(request):
     """ Saving product in user personal db with AJAX """
-    print(request.body)
-    print(request.POST)
     if request.is_ajax():
         body = json.loads(request.body)
     else:

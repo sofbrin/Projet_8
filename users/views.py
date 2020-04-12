@@ -53,7 +53,7 @@ def login_view(request):
 
 
 def logout_view(request):
-    """ Logging out function """
+    """ Loging out function """
     logout(request)
     messages.success(request, 'Vous êtes déconnecté', extra_tags='toaster')
     return HttpResponseRedirect(reverse('home'))
