@@ -19,7 +19,7 @@ Réalisation d'une application qui permet de trouver des substituts plus sains �
 
 ### 5. Tests
 - Lancer les tests : **_coverage run manage.py test_**
-- Editer le rapport du coverage (coverage à 89 %) : **_coverage report -m_**
+- Editer le rapport du coverage : **_coverage report -m_**
 
 ### 6. Lancement en local
 **Créer et remplir la base de données** : la commande de lancement permet de sélectionner le nombre de catégories entre 5 et 20. 
