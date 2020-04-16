@@ -43,8 +43,8 @@ def results(request):
         query = request.GET.get('query', '')
         page_number = request.GET.get('page', 1)
 
-    elif request.method == 'POST':
-        query = request.POST.get('query', '')
+    """elif request.method == 'POST':
+        query = request.POST.get('query', '')"""
 
     if query == '':
         messages.error(request, 'Vous n\'avez saisi aucun produit', extra_tags='toaster')
