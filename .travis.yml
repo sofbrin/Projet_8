@@ -1,0 +1,19 @@
+language: python
+python:
+  - '3.5'
+
+# safelist
+branches:
+  only:
+    - staging
+
+before_script:
+  - pip install -r requirements.txt
+
+env: DJANGO_SETTINGS_MODULE= "projet_8.settings.developpement"
+
+services:
+  - postgresql
+
+script:
+  - ./manage.py test
