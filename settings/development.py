@@ -11,10 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-from os.path import normpath, join
-
-import django_heroku
-#import dj_database_url
 
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -26,15 +22,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ.get('SECRET_KEY', 'o=z8_es@ivafc5kw+qh(2k@2zsz&x6ti%-sszdi1cf5tkk!hmm')
 
-ALLOWED_HOSTS = ['purbeurre8app.herokuapp.com', '127.0.0.1']
+ALLOWED_HOSTS = []
 DEBUG = True
-"""if os.environ.get('ENV', 'DEVELOPMENT') == 'PRODUCTION':
-    DEBUG_PROPAGATE_EXCEPTIONS = True
-    DEBUG = False
-    ALLOWED_HOSTS = ['purbeurre8app.herokuapp.com']
-
-else:
-    DEBUG = True"""
 
 # Application definition
 
@@ -59,7 +48,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-#INTERNAL_IPS = ['127.0.0.1']
+INTERNAL_IPS = ['127.0.0.1']
 
 ROOT_URLCONF = 'purbeurre.urls'
 
@@ -137,7 +126,3 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-
-if os.environ.get('ENV') == 'PRODUCTION':
-    DEBUG = False
-    django_heroku.settings(locals())

@@ -3,4 +3,5 @@
 .idea/
 __pycache__
 /staticfiles/
+/settings/production.py
 geckodriver.log
