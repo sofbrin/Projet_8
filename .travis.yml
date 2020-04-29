@@ -1,6 +1,6 @@
 language: python
 python:
-  - '3.5'
+  - '3.7'
 
 # safelist
 branches:
@@ -10,7 +10,7 @@ branches:
 before_script:
   - pip install -r requirements.txt
 
-env: DJANGO_SETTINGS_MODULE= "projet_8.settings.developpement"
+env: DJANGO_SETTINGS_MODULE= "projet_8.settings.travis"
 
 services:
   - postgresql
