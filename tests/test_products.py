@@ -1,6 +1,6 @@
 from selenium import webdriver
-from django.test import LiveServerTestCase
-from django.test import TestCase, SimpleTestCase
+from selenium.webdriver.common.by import By
+from django.test import LiveServerTestCase, TestCase, SimpleTestCase
 from django.urls import reverse
 from webdriver_manager.chrome import ChromeDriverManager
 
@@ -24,7 +24,7 @@ class SeleniumTests(LiveServerTestCase):
     def test_link_product_redirects_OFF_detail_product(self):
         self.selenium.get('http://127.0.0.1:8000/products/product/352/')
         called_url = 'https://world.openfoodfacts.org/product/3272770003148/pure-goat-chavroux'
-        self.selenium.find_element_by_link_text("Voir la fiche sur le site d'Open Food Facts").click()
+        self.selenium.find_element(By.LINK_TEXT, "Voir la fiche sur le site d'Open Food Facts").click()
         self.assertEqual(self.selenium.current_url, called_url)
 
 
@@ -63,7 +63,7 @@ class TestViewsProducts(TestCase):
 
     def test_results_returns_better_nutriscore(self):
         product = self.product
-        response = self.client.post(reverse('results'), {'query': product.name})
+        response = self.client.get(reverse('results'), {'query': product.name})
         context = response.context
         substitutes = context['substitutes']
         for substitute in substitutes:
@@ -71,7 +71,7 @@ class TestViewsProducts(TestCase):
 
     def test_results_returns_200(self):
         product = self.product
-        response = self.client.post(reverse('results'), {'query': product})
+        response = self.client.get(reverse('results'), {'query': product})
         self.assertEqual(response.status_code, 200)
 
     def test_search_returns_nothing(self):

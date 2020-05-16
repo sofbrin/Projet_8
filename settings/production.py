@@ -1,13 +1,15 @@
-SECRET_KEY = 'o=z8_es@ivafc5kw+qh(2k@2zsz&x6ti%-sszdi1cf5tkk!hmm'
+from .development import *
+
+SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = False
 ALLOWED_HOSTS = ['51.210.4.42']
 
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'purbeurre',
-        'USER': 'sof',
-        'PASSWORD': 'myKobPB3*',
+        'NAME': os.environ.get('db_name'),
+        'USER': os.environ.get('db_user'),
+        'PASSWORD': os.environ.get('db_password'),
         'HOST': '',
         'PORT': '5432',
     }
