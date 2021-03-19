@@ -9,7 +9,7 @@ coverage==5.2
 crayons==0.3.1
 cryptography==2.9.2
 dj-database-url==0.5.0
-Django==3.0.7
+Django==3.1.6
 django-autocomplete-light==3.6.0.dev1
 django-environ==0.4.5
 django-heroku==0.3.1
