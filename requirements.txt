@@ -37,7 +37,7 @@ sentry-sdk==1.0.0
 six==1.15.0
 sniffio==1.2.0
 sortedcontainers==2.3.0
-sqlparse==0.4.1
+sqlparse==0.4.2
 tchappui-webdrivers==0.3.7
 trio==0.18.0
 trio-websocket==0.9.2
